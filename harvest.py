@@ -9,7 +9,7 @@ class MelonType:
     def __init__(
         self, code, first_harvest, color, is_seedless, is_bestseller, name
     ):
-        """Initialize a melon."""
+        """Initialize a melon type."""
 
         self.pairings = []
         self.code = code
@@ -103,7 +103,6 @@ def make_melon_type_lookup(melon_types):
 
     return melon_lookup
 
-print(make_melon_type_lookup(make_melon_types()))
 
 
 ############
@@ -114,8 +113,20 @@ print(make_melon_type_lookup(make_melon_types()))
 class Melon:
     """A melon in a melon harvest."""
 
-    # Fill in the rest
-    # Needs __init__ and is_sellable methods
+    def __init__(self, melon_type, shape_rating, color_rating, field, harvester):
+        """Initialize a melon."""
+        self.melon_type = melon_type
+        self.shape_rating = shape_rating
+        self.color_rating = color_rating
+        self.field = field
+        self.harvester = harvester
+    
+    def is_sellable(self):
+        """Checks if melon is sellable."""
+        if self.shape_rating > 5 and self.color_rating > 5 and self.field != 3:
+            return True
+        return False
+
 
 
 def make_melons(melon_types):
