@@ -113,7 +113,9 @@ def make_melon_type_lookup(melon_types):
 class Melon:
     """A melon in a melon harvest."""
 
-    def __init__(self, melon_type, shape_rating, color_rating, field, harvester):
+    def __init__(
+        self, melon_type, shape_rating, color_rating, field, harvester
+    ):
         """Initialize a melon."""
         self.melon_type = melon_type
         self.shape_rating = shape_rating
@@ -227,6 +229,31 @@ def get_sellability_report(melons):
             sellability = "(CAN BE SOLD)"
         else:
             sellability = "(NOT SELLABLE)"
-        print(f'{melon.melon_type.name} was harvested by {melon.harvester} from Field {melon.field} {sellability}')
+        print(f'{melon.melon_type.name} was harvested by',
+            f'{melon.harvester} from Field {melon.field} {sellability}')
 
-get_sellability_report(make_melons(make_melon_types()))
+def make_melons_from_file(filename, melon_types):
+
+    melons_by_id = make_melon_type_lookup(melon_types)
+    melons_from_file = []
+    
+    harvest_log = open(filename)
+
+    for line in harvest_log:
+        line = line.rstrip()
+        elements = line.split(' ')
+        shape_rating = int(elements[1])
+        color_rating = int(elements[3])
+        melon_type = elements[5]
+        harvester = elements[8]
+        field = int(elements[11])
+        melons_from_file.append(Melon(melons_by_id[melon_type], 
+            shape_rating, color_rating, field, harvester))
+
+    return melons_from_file
+
+
+# I changed this to get the sellability report of the melons from file
+get_sellability_report(
+    make_melons_from_file('harvest_log.txt', 
+    make_melon_types()))
