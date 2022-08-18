@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 
 class Player:
     def __init__(self, game_piece, name):
@@ -30,3 +30,34 @@ class Game:
         self.player2 = player2
         self.started_at = None
         self.finished_at = None
+
+def play_game():
+    print("Initializing Game!")
+    player_one_name = input("What's player one's name? ")
+    player_two_name = input("What's player two's name? ")
+
+    player1 = Player("X", player_one_name)
+    player2 = Player("O", player_two_name)
+    print(f"{player1.name} is {player1.game_piece}")
+    print(f"{player2.name} is {player2.game_piece}")
+
+    current_board = Board()
+    
+    current_game = Game(current_board, player1, player2)
+
+    current_game.started_at = datetime.now()
+
+    print("      Column 0  Column 1  Column 2")
+    print("Row 0    -         -          -   ")
+    print("Row 1    -         -          -   ")
+    print("Row 2    -         -          -   ")
+
+    while True:
+        row = int(input("What row does player one want to put their move in? "))
+        column = int(input("What row does player one want to put their move in? "))
+        player_one_move = Move(player1, [row, column])
+        current_board.add_move(player_one_move)
+        current_board.display()
+        break
+
+play_game()
