@@ -222,4 +222,11 @@ def make_melons(melon_types):
 def get_sellability_report(melons):
     """Given a list of melon object, prints whether each one is sellable."""
 
-    # Fill in the rest
+    for melon in melons:
+        if melon.is_sellable():
+            sellability = "(CAN BE SOLD)"
+        else:
+            sellability = "(NOT SELLABLE)"
+        print(f'{melon.melon_type.name} was harvested by {melon.harvester} from Field {melon.field} {sellability}')
+
+get_sellability_report(make_melons(make_melon_types()))
