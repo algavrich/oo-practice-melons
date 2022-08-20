@@ -56,7 +56,10 @@ class Game:
         self.finished_at = None
 
     def check_for_winner(self):
-        """Check if there is a winning board"""
+        """Check if there is a winning board or draw
+        
+        If game over, announce winner/draw and return True
+        """
 
         winner = None
         current_moves = self.board.moves
@@ -91,8 +94,21 @@ class Game:
                 if "-" not in current_moves[1]:
                     if "-" not in current_moves[2]:
                         winner = "Draw"
+ 
+        # Do the thing if game is over (win or draw)
+        if winner != None and winner != "Draw":
+            if winner == "X":
+                victor = self.player1
+            else:
+                victor = self.player2
+            print(f"{victor.name} wins! Game over.")
+            return True
 
-        return winner
+        if winner == "Draw":
+            print("Draw. Game over.")
+            return True
+
+        return False
 
 
 def play_game():
@@ -118,6 +134,7 @@ def play_game():
     # Log start time
     current_game.started_at = datetime.now()
 
+    # Display guide board
     print("      Column 0  Column 1  Column 2")
     print("Row 0    -         -          -   ")
     print("Row 1    -         -          -   ")
@@ -126,8 +143,11 @@ def play_game():
     while True:
 
         # Get player 1 move
-        row = int(input("What row does player one want to put their move in? "))
-        column = int(input("What row does player one want to put their move in? "))
+        print("Player one, choose the location where you'd like to place your piece")
+        print("What are the coordinates?")
+        row = int(input("Row > "))
+        column = int(input("Column > "))
+
 
         # Instantiate given move
         player_one_move = Move(player1, [row, column])
@@ -138,25 +158,15 @@ def play_game():
         # Display current board
         current_board.display()
 
-        # Get current winner status
-        winner_status = current_game.check_for_winner()
-
-        # Check for winner
-        if winner_status != None and winner_status != "Draw":
-            if winner_status == "X":
-                winner = player1
-            else:
-                winner = player2
-            print(f"{winner.name} wins! Game over.")
-            break
-
-        if winner_status == "Draw":
-            print("Draw. Game over.")
+        # Check for winner and break if there is a winner
+        if current_game.check_for_winner() == True:
             break
 
         # Get player 2 move
-        row = int(input("What row does player two want to put their move in? "))
-        column = int(input("What row does player two want to put their move in? "))
+        print("Player two, choose the location where you'd like to place your piece")
+        print("What are the coordinates?")
+        row = int(input("Row > "))
+        column = int(input("Column > "))
 
         # Instantiate given move
         player_two_move = Move(player2, [row, column])
@@ -167,28 +177,32 @@ def play_game():
         # Display current board
         current_board.display()
 
-        # Get current winner status
-        winner_status = current_game.check_for_winner()
-
-        # Check for winner
-        if winner_status != None and winner_status != "Draw":
-            if winner_status == "X":
-                winner = player1
-            else:
-                winner = player2
-            print(f"{winner.name} wins! Game over.")
+        # Break if there is a winner
+        if current_game.check_for_winner() == True:
             break
 
-        if winner_status == "Draw":
-            print("Draw. Game over.")
-            break
 
     current_game.finished_at = datetime.now()
     game_length = current_game.finished_at - current_game.started_at
     (print(f"Game Length: {game_length}"))
 
-play_game()
+def actually_play_game():
+    """PLay game until user wants to stop"""
 
-start_time = datetime.now()
-end_time = datetime.now()
-game_length = end_time - start_time
+    while True:
+
+        play_game()
+
+        print("Would you like to play again?")
+        print("Type Y/n")
+        play_again = input("> ")
+        while True:
+            if play_again.upper() == "Y":
+                break
+            elif play_again.lower() == "n":
+                return "Game Over"
+            else:
+                print("That's not a valid answer")
+
+actually_play_game()
+            
