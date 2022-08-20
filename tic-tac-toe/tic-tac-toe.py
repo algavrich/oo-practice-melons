@@ -85,6 +85,13 @@ class Game:
                 if current_moves[1][1] == current_moves[2][0]:
                     winner = current_moves[0][2]
 
+        # Check for draw
+        if winner == None:
+            if "-" not in current_moves[0]:
+                if "-" not in current_moves[1]:
+                    if "-" not in current_moves[2]:
+                        winner = "Draw"
+
         return winner
 
 
@@ -135,12 +142,16 @@ def play_game():
         winner_status = current_game.check_for_winner()
 
         # Check for winner
-        if winner_status != None:
+        if winner_status != None and winner_status != "Draw":
             if winner_status == "X":
                 winner = player1
             else:
                 winner = player2
             print(f"{winner.name} wins! Game over.")
+            break
+
+        if winner_status == "Draw":
+            print("Draw. Game over.")
             break
 
         # Get player 2 move
@@ -160,7 +171,7 @@ def play_game():
         winner_status = current_game.check_for_winner()
 
         # Check for winner
-        if winner_status != None:
+        if winner_status != None and winner_status != "Draw":
             if winner_status == "X":
                 winner = player1
             else:
@@ -168,6 +179,16 @@ def play_game():
             print(f"{winner.name} wins! Game over.")
             break
 
-        
+        if winner_status == "Draw":
+            print("Draw. Game over.")
+            break
+
+    current_game.finished_at = datetime.now()
+    game_length = current_game.finished_at - current_game.started_at
+    (print(f"Game Length: {game_length}"))
 
 play_game()
+
+start_time = datetime.now()
+end_time = datetime.now()
+game_length = end_time - start_time
