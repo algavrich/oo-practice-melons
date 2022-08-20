@@ -195,14 +195,22 @@ def actually_play_game():
 
         print("Would you like to play again?")
         print("Type Y/n")
-        play_again = input("> ")
         while True:
+
+            play_again = input("> ")
+
             if play_again.upper() == "Y":
+
                 break
+
             elif play_again.lower() == "n":
+
                 return "Game Over"
+
             else:
+
                 print("That's not a valid answer")
+                continue
 
 actually_play_game()
             
