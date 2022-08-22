@@ -120,16 +120,26 @@ class Game:
         return False
 
     def get_player_move(self, player):
+        
+        while True:
 
-        # Get player move
-        print(f"{player.name}, choose the location where you'd like to place your piece")
-        print("What are the coordinates?")
-        row = int(input("Row > "))
-        column = int(input("Column > "))
+            try:
+
+                # Get player move
+                print(f"{player.name}, choose the location where you'd like to place your piece")
+                print("What are the coordinates?")
+                row = int(input("Row > "))
+                column = int(input("Column > "))
 
 
-        # Instantiate given move
-        player_move = Move(player, [row, column])
+                # Instantiate given move
+                player_move = Move(player, [row, column])
+                break
+
+            except ValueError:
+
+                print("That was not a valid location, try again")
+
 
         # Add move to current board
         self.board.add_move(player_move)
