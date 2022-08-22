@@ -6,6 +6,7 @@ from datetime import datetime
 class Player:
     """Player class holds player name and game piece"""
 
+
     def __init__(self, game_piece, name):
         """Initialize game piece and name attributes"""
 
@@ -14,6 +15,7 @@ class Player:
 
 class Move:
     """Move class holds author object and position for given move"""
+
 
     def __init__(self, author, position):
         """Initialize author and position attributes"""
@@ -24,10 +26,12 @@ class Move:
 class Board:
     """Board class holds current board and can display baord and add move"""
 
+
     def __init__(self):
         """Initialize .moves object that hold moves on current board"""
 
         self.moves = [["-","-","-"],["-","-","-"],["-","-","-"]]
+
 
     def display(self):
         """Displays given board"""
@@ -36,6 +40,7 @@ class Board:
 
             print(f'{line[0]} {line[1]} {line[2]}')
     
+
     def add_move(self, move):
         """Adds player's move to given board"""
 
@@ -43,8 +48,11 @@ class Board:
         column = move.position[1]
         self.moves[row][column] = move.author.game_piece
 
+
+
 class Game:
     """Game class holds given board, players, and time data"""
+
 
     def __init__(self, board, player1, player2):
         """Initialize board, player, and time log attributes"""
@@ -54,6 +62,7 @@ class Game:
         self.player2 = player2
         self.started_at = None
         self.finished_at = None
+
 
     def check_for_winner(self):
         """Check if there is a winning board or draw
@@ -110,6 +119,31 @@ class Game:
 
         return False
 
+    def get_player_move(self, player):
+
+        # Get player move
+        print(f"{player.name}, choose the location where you'd like to place your piece")
+        print("What are the coordinates?")
+        row = int(input("Row > "))
+        column = int(input("Column > "))
+
+
+        # Instantiate given move
+        player_move = Move(player, [row, column])
+
+        # Add move to current board
+        self.board.add_move(player_move)
+
+        # Display current board
+        self.board.display()
+
+        # Check for winner and return True if there is a winner
+        if self.check_for_winner() == True:
+
+            return True
+
+        return False
+
 
 def play_game():
     """Executes game play"""
@@ -142,49 +176,21 @@ def play_game():
 
     while True:
 
-        # Get player 1 move
-        print("Player one, choose the location where you'd like to place your piece")
-        print("What are the coordinates?")
-        row = int(input("Row > "))
-        column = int(input("Column > "))
+        # Player 1 move
+        if current_game.get_player_move(player1) == True:
 
-
-        # Instantiate given move
-        player_one_move = Move(player1, [row, column])
-
-        # Add move to current board
-        current_board.add_move(player_one_move)
-
-        # Display current board
-        current_board.display()
-
-        # Check for winner and break if there is a winner
-        if current_game.check_for_winner() == True:
             break
 
-        # Get player 2 move
-        print("Player two, choose the location where you'd like to place your piece")
-        print("What are the coordinates?")
-        row = int(input("Row > "))
-        column = int(input("Column > "))
+        # Player 2 move
+        if current_game.get_player_move(player2) == True:
 
-        # Instantiate given move
-        player_two_move = Move(player2, [row, column])
-
-        # Add move to current board
-        current_board.add_move(player_two_move)
-
-        # Display current board
-        current_board.display()
-
-        # Break if there is a winner
-        if current_game.check_for_winner() == True:
             break
 
 
     current_game.finished_at = datetime.now()
     game_length = current_game.finished_at - current_game.started_at
     (print(f"Game Length: {game_length}"))
+
 
 def actually_play_game():
     """PLay game until user wants to stop"""
@@ -209,8 +215,11 @@ def actually_play_game():
 
             else:
 
-                print("That's not a valid answer")
+                print("That's not a valid answer, try again")
                 continue
+
+
+
 
 actually_play_game()
             
